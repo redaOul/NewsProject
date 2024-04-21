@@ -1,25 +1,51 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import SearchBar from './components/SearchBar/SearchBar';
+import NewsCard from './components/NewsCard/NewsCard';
+import NewsModal from './components/NewsModal/NewsModal';
+import NewsService from './services/NewsService';
 
-function App() {
+const App = () => {
+  const [news, setNews] = useState([]);
+  const [selectedNews, setSelectedNews] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleSearch = async (searchTerm) => {
+    const newsData = await NewsService.fetchNews(searchTerm);
+    setNews(newsData);
+  };
+
+  const handleCardClick = (news) => {
+    setSelectedNews(news);
+    setModalVisible(true);
+  };  
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <SearchBar onSearch={handleSearch} />
+      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        {news.map((article, index) => (
+          <NewsCard
+          key={index}
+          title={article.title}
+          date={article.publishedAt}
+          contentPreview={article.description}
+          onClick={() => handleCardClick(article)} // Pass the onClick handler here
+          />        
+        ))}
+      </div>
+      {selectedNews && (
+        <NewsModal
+          visible={modalVisible}
+          onClose={closeModal}
+          newsDetails={selectedNews}
+        />
+      )}
     </div>
   );
-}
+};
 
 export default App;
