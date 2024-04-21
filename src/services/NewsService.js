@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const apiKey = 'fe57a831be23470a8af8f4e94b82f881'; // Replace this with your actual API key
+const apiKey = 'Your_Public_Key'; // Replace this with your actual API key
 
 const NewsService = {
   fetchNews: async (searchTerm) => {
