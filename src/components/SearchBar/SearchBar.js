@@ -8,7 +8,7 @@ const SearchBar = ({ onSearch }) => {
 
   const handleSearch = (value) => {
     setSearchTerm(value);
-    onSearch(value); // This function will be passed from the parent component
+    onSearch(value);
   };
 
   return (

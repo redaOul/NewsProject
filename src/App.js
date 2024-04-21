@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SearchBar from './components/SearchBar/SearchBar';
 import NewsCard from './components/NewsCard/NewsCard';
 import NewsModal from './components/NewsModal/NewsModal';
@@ -9,6 +9,19 @@ const App = () => {
   const [selectedNews, setSelectedNews] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
 
+  useEffect(() => {
+    const fetchNewestNews = async () => {
+      try {
+        const newsData = await NewsService.fetchNewestNews();
+        setNews(newsData);
+      } catch (error) {
+        console.error('Error fetching newest news:', error);
+      }
+    };
+
+    fetchNewestNews();
+  }, []);
+
   const handleSearch = async (searchTerm) => {
     const newsData = await NewsService.fetchNews(searchTerm);
     setNews(newsData);
@@ -17,7 +30,7 @@ const App = () => {
   const handleCardClick = (news) => {
     setSelectedNews(news);
     setModalVisible(true);
-  };  
+  };
 
   const closeModal = () => {
     setModalVisible(false);
@@ -29,12 +42,12 @@ const App = () => {
       <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         {news.map((article, index) => (
           <NewsCard
-          key={index}
-          title={article.title}
-          date={article.publishedAt}
-          contentPreview={article.description}
-          onClick={() => handleCardClick(article)} // Pass the onClick handler here
-          />        
+            key={index}
+            title={article.title}
+            date={article.publishedAt}
+            contentPreview={article.description}
+            onClick={() => handleCardClick(article)}
+          />
         ))}
       </div>
       {selectedNews && (

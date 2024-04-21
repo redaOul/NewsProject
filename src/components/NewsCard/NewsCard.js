@@ -7,8 +7,7 @@ const NewsCard = ({ title, date, contentPreview, onClick }) => {
   return (
     <Card
       style={{ width: 300, margin: '10px' }}
-      onClick={onClick} // Handle click event here
-    >
+      onClick={onClick} >
       <Meta title={title} description={date} />
       <p>{contentPreview}</p>
     </Card>

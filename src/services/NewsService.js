@@ -4,14 +4,17 @@ const apiKey = 'fe57a831be23470a8af8f4e94b82f881'; // Replace this with your act
 
 const NewsService = {
   fetchNews: async (searchTerm) => {
+    // Fetch news based on search term
+  },
+  fetchNewestNews: async () => {
     try {
       const response = await axios.get(
-        `https://newsapi.org/v2/everything?q=${searchTerm}&apiKey=${apiKey}`
+        `https://newsapi.org/v2/top-headlines?country=us&apiKey=${apiKey}`
       );
-      return response.data.articles; // Assuming the API response has an 'articles' array containing news data
+      return response.data.articles; // API response has an array
     } catch (error) {
-      console.error('Error fetching news:', error);
-      return []; // Return empty array in case of error
+      console.error('Error fetching newest news:', error);
+      return []; // Return empty array in there is an error
     }
   },
 };
